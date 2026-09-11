@@ -216,8 +216,14 @@
                 </div>
 
                 <div class="flex items-center gap-2">
+                    <a href="{{ route('parsa.feedback.export_csv') }}" 
+                       id="btnExportFeedbackTop"
+                       class="hidden px-3.5 py-1.5 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white rounded-xl text-xs font-semibold border border-emerald-500/30 transition items-center gap-1.5 shadow-sm">
+                        <span>📥</span>
+                        <span>Export CS Feedback (CSV)</span>
+                    </a>
                     @if($contacts->count() > 0)
-                        <form action="{{ route('parsa.contacts.purge_all') }}" method="POST" onsubmit="return confirm('Purge all contact messages?');">
+                        <form action="{{ route('parsa.contacts.purge-all') }}" method="POST" onsubmit="return confirm('Purge all contact messages?');">
                             @csrf
                             <button type="submit" class="px-3.5 py-1.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 rounded-xl text-xs font-semibold border border-rose-500/30 transition flex items-center gap-1">
                                 <span>🗑️ Purge All Contacts</span>
@@ -415,44 +421,66 @@
             </div>
 
             <!-- TAB 5: CS FEEDBACK TABLE -->
-            <div id="tabView-feedbacks" class="hidden overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="exec-table-header text-xs text-slate-400 uppercase tracking-wider">
-                            <th class="p-3.5 rounded-l-xl">Student / Specialist</th>
-                            <th class="p-3.5">Star Rating</th>
-                            <th class="p-3.5">Feedback Message</th>
-                            <th class="p-3.5">Submission Date</th>
-                            <th class="p-3.5 rounded-r-xl text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800/60 text-xs">
-                        @forelse($feedbacks as $f)
-                            <tr class="exec-row hover:bg-slate-900/60 transition" data-searchable="{{ strtolower(($f->student->name ?? 'Student') . ' ' . $f->comment) }}">
-                                <td class="p-3.5 font-bold text-white">{{ $f->student->name ?? 'Campus Specialist' }}</td>
-                                <td class="p-3.5 text-amber-400 font-bold">★ {{ $f->rating ?? 5 }}/5</td>
-                                <td class="p-3.5 text-slate-300 max-w-sm whitespace-normal">{{ $f->comment }}</td>
-                                <td class="p-3.5 text-slate-400">{{ $f->created_at->format('M d, H:i') }}</td>
-                                <td class="p-3.5 text-right space-x-1.5">
-                                    <button onclick="openReplyModal('feedback', {{ $f->id }}, '{{ addslashes($f->student->name ?? 'Student') }}', '{{ addslashes($f->student->email ?? '') }}')" 
-                                        class="px-2.5 py-1 bg-indigo-600/30 hover:bg-indigo-600 text-indigo-200 hover:text-white rounded-lg text-[11px] font-semibold border border-indigo-500/30 transition">
-                                        ✉️ Reply
-                                    </button>
-                                    <form action="{{ route('parsa.feedback.delete', $f->id) }}" method="POST" class="inline" onsubmit="return confirm('Delete feedback submission?');">
-                                        @csrf
-                                        <button type="submit" class="px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 rounded-lg text-[11px] font-semibold border border-rose-500/30 transition">
-                                            Delete
+            <div id="tabView-feedbacks" class="hidden space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-slate-900/60 p-4 rounded-2xl border border-slate-800/80">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-lg">
+                            💬
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">CS Feedback Directory</h3>
+                            <p class="text-[11px] text-slate-400">Total of {{ $feedbacks->count() }} responses & reviews logged</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('parsa.feedback.export_csv') }}" 
+                       class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/20 shrink-0">
+                        <span>📥</span>
+                        <span>Export to CSV</span>
+                    </a>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="exec-table-header text-xs text-slate-400 uppercase tracking-wider">
+                                <th class="p-3.5 rounded-l-xl">Student / Specialist</th>
+                                <th class="p-3.5">Star Rating</th>
+                                <th class="p-3.5">Feedback Message</th>
+                                <th class="p-3.5">Submission Date</th>
+                                <th class="p-3.5 rounded-r-xl text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-xs">
+                            @forelse($feedbacks as $f)
+                                <tr class="exec-row hover:bg-slate-900/60 transition" data-searchable="{{ strtolower(($f->student->name ?? 'Student') . ' ' . ($f->feedback ?? $f->comment)) }}">
+                                    <td class="p-3.5 font-bold text-white">
+                                        <div>{{ $f->student->name ?? 'Campus Specialist' }}</div>
+                                        <div class="text-[10px] text-slate-500 font-normal font-mono">{{ $f->email ?? ($f->student->email ?? '') }}</div>
+                                    </td>
+                                    <td class="p-3.5 text-amber-400 font-bold">★ {{ $f->rating ?? 5 }}/5</td>
+                                    <td class="p-3.5 text-slate-300 max-w-sm whitespace-normal">{{ $f->feedback ?? $f->comment }}</td>
+                                    <td class="p-3.5 text-slate-400">{{ $f->created_at->format('M d, H:i') }}</td>
+                                    <td class="p-3.5 text-right space-x-1.5">
+                                        <button onclick="openReplyModal('feedback', {{ $f->id }}, '{{ addslashes($f->student->name ?? 'Student') }}', '{{ addslashes($f->email ?? ($f->student->email ?? '')) }}')" 
+                                            class="px-2.5 py-1 bg-indigo-600/30 hover:bg-indigo-600 text-indigo-200 hover:text-white rounded-lg text-[11px] font-semibold border border-indigo-500/30 transition">
+                                            ✉️ Reply
                                         </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="p-8 text-center text-slate-500">No CS feedback submissions found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                        <form action="{{ route('parsa.feedback.delete', $f->id) }}" method="POST" class="inline" onsubmit="return confirm('Delete feedback submission?');">
+                                            @csrf
+                                            <button type="submit" class="px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 rounded-lg text-[11px] font-semibold border border-rose-500/30 transition">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="p-8 text-center text-slate-500">No CS feedback submissions found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -793,6 +821,17 @@
 
         // Tab Switching Logic
         function switchTab(tabName) {
+            const btnExportTop = document.getElementById('btnExportFeedbackTop');
+            if (btnExportTop) {
+                if (tabName === 'feedbacks') {
+                    btnExportTop.classList.remove('hidden');
+                    btnExportTop.classList.add('flex');
+                } else {
+                    btnExportTop.classList.add('hidden');
+                    btnExportTop.classList.remove('flex');
+                }
+            }
+
             ['analytics', 'members', 'articles', 'contacts', 'feedbacks'].forEach(t => {
                 const view = document.getElementById('tabView-' + t);
                 const btn = document.getElementById('tabBtn-' + t);

@@ -23,4 +23,9 @@ class CsStudent extends Model
     {
         return $this->hasMany(CsFeedback::class, 'cs_student_id');
     }
+
+    public function getNameAttribute()
+    {
+        return trim(($this->first_name ?? '') . ' ' . ($this->last_name ?? '')) ?: 'Campus Specialist';
+    }
 }

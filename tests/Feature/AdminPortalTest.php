@@ -240,6 +240,43 @@ class AdminPortalTest extends TestCase
         $this->assertDatabaseCount('contacts', 0);
     }
 
+    /**
+     * Test admin can export CS feedback to CSV.
+     */
+    public function test_admin_can_export_cs_feedback_to_csv()
+    {
+        $admin = User::factory()->create(['email' => 'parsabe99@gmail.com', 'google2fa_secret' => 'SECRET']);
+        
+        $student = CsStudent::create([
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@example.com',
+        ]);
+
+        CsFeedback::create([
+            'cs_student_id' => $student->id,
+            'email' => 'john.doe@example.com',
+            'feedback' => 'Great experience!',
+            'ideas' => 'Add more tutorials',
+            'questions' => 'None',
+            'received_all_files' => true,
+        ]);
+
+        $response = $this->actingAs($admin)
+            ->withSession(['parsa_2fa_verified' => true])
+            ->get(route('parsa.feedback.export_csv'));
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+        $this->assertStringContainsString('attachment; filename="cs_feedbacks_', $response->headers->get('Content-Disposition'));
+        
+        $content = $response->streamedContent();
+        $this->assertStringContainsString('Student Name', $content);
+        $this->assertStringContainsString('John Doe', $content);
+        $this->assertStringContainsString('john.doe@example.com', $content);
+        $this->assertStringContainsString('Great experience!', $content);
+    }
+
     // ==========================================
     // Helper to generate TOTP code dynamically for testing
     // ==========================================

@@ -191,7 +191,7 @@ Route::middleware(['auth', 'admin.2fa'])->group(function () {
     Route::post('/parsa/contact/{id}/reply', [App\Http\Controllers\AdminPortalController::class, 'replyContact'])->name('parsa.contact.reply');
     Route::post('/parsa/contact/{id}/delete', [App\Http\Controllers\AdminPortalController::class, 'deleteContact'])->name('parsa.contact.delete');
     Route::post('/parsa/contacts/purge-all', [App\Http\Controllers\AdminPortalController::class, 'purgeAllContacts'])->name('parsa.contacts.purge-all');
-    Route::post('/parsa/contacts/purge_all', [App\Http\Controllers\AdminPortalController::class, 'purgeAllContacts'])->name('parsa.contacts.purge_all');
+    Route::get('/parsa/feedback/export-csv', [App\Http\Controllers\AdminPortalController::class, 'exportFeedbackCsv'])->name('parsa.feedback.export_csv');
     Route::post('/parsa/feedback/{id}/reply', [App\Http\Controllers\AdminPortalController::class, 'replyFeedback'])->name('parsa.feedback.reply');
     Route::post('/parsa/feedback/{id}/delete', [App\Http\Controllers\AdminPortalController::class, 'deleteFeedback'])->name('parsa.feedback.delete');
     Route::post('/parsa/article/{id}/delete', [App\Http\Controllers\AdminPortalController::class, 'adminDeleteArticle'])->name('parsa.article.delete');

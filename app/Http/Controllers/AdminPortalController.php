@@ -353,6 +353,76 @@ class AdminPortalController extends Controller
         }
     }
 
+    /**
+     * Export all CS Feedback entries to CSV format.
+     */
+    public function exportFeedbackCsv()
+    {
+        if (!auth()->check() || auth()->user()->email !== 'parsabe99@gmail.com') {
+            abort(403, 'Unauthorized access.');
+        }
+
+        $feedbacks = CsFeedback::with('student')->orderBy('created_at', 'desc')->get();
+        $filename = 'cs_feedbacks_' . now()->format('Y-m-d_His') . '.csv';
+
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma'              => 'no-cache',
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires'             => '0',
+        ];
+
+        $callback = function () use ($feedbacks) {
+            $handle = fopen('php://output', 'w');
+
+            // UTF-8 BOM for Excel compatibility
+            fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+            // CSV Column Headers
+            fputcsv($handle, [
+                'ID',
+                'Student Name',
+                'Student Email',
+                'Feedback Message',
+                'Ideas & Suggestions',
+                'Questions & Needs',
+                'Received All Files',
+                'Admin Replied',
+                'Reply Text',
+                'Replied At',
+                'Submitted At',
+            ]);
+
+            foreach ($feedbacks as $f) {
+                $studentName = 'Campus Specialist';
+                if ($f->student) {
+                    $studentName = trim(($f->student->first_name ?? '') . ' ' . ($f->student->last_name ?? ''));
+                }
+
+                $email = $f->email ?? ($f->student->email ?? '');
+
+                fputcsv($handle, [
+                    $f->id,
+                    $studentName ?: 'Campus Specialist',
+                    $email,
+                    $f->feedback ?? '',
+                    $f->ideas ?? '',
+                    $f->questions ?? '',
+                    $f->received_all_files ? 'Yes' : 'No',
+                    !empty($f->reply) ? 'Yes' : 'No',
+                    $f->reply ?? '',
+                    $f->replied_at ? $f->replied_at->format('Y-m-d H:i:s') : '',
+                    $f->created_at ? $f->created_at->format('Y-m-d H:i:s') : '',
+                ]);
+            }
+
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     // ==========================================
     // TOTP Cryptographic Verification Utilities (Self-Contained)
     // ==========================================
