@@ -15,78 +15,76 @@ body {
     min-height: 100vh;
     background-color: #f3f4f6;
     position: relative;
-    /* We handle the background images via ::before and ::after for smooth fading */
+    /* Single Wallpaper Background */
 }
 
-body.dark {
-    background-color: #111827;
-}
-
-/* 3. Buttery Smooth Background Transition via Opacity Fading */
-/* 3. Buttery Smooth Background Transition via Opacity Fading */
-body::before,
-body::after {
+body::before {
     content: "";
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
+    background-image: url("/images/main.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     z-index: -2;
-    /* CHANGE THIS LINE from 1s to 0.7s to perfectly match JS duration-700 */
-    transition: opacity 0.1s ease-in-out; 
 }
 
-/* Light Mode Background Image (Visible by default) */
-body::before {
-    background-image: url("/images/light.jpg");
-    opacity: 1; 
-}
-
-/* Dark Mode Background Image (Hidden by default) */
-body::after {
-    background-image: url("/images/dark.jpg");
-    opacity: 0; 
-}
-
-/* Crossfade trigger: When the body has the .dark class */
-body.dark::before {
-    opacity: 0; /* Fade out light image */
-}
-
-body.dark::after {
-    opacity: 1; /* Fade in dark image */
-}
-
-/* 4. Custom iOS Glass Class (True Apple Style) */
+/* 4. Custom Dark Transparent Glass (Apple Glassmorphism) */
 .ios-glass {
     background: linear-gradient(
         135deg,
-        rgba(255, 255, 255, 0.25),
-        rgba(255, 255, 255, 0.05)
+        rgba(15, 23, 42, 0.70),
+        rgba(10, 15, 30, 0.50)
     );
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow:
-        0 4px 30px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        0 15px 35px -5px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-/* Dark mode variant for the glass container */
-.dark .ios-glass {
-    background: linear-gradient(
-        135deg,
-        rgba(20, 25, 35, 0.6),
-        rgba(20, 25, 35, 0.3)
-    );
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow:
-        0 4px 30px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+/* Dark Transparent Glass Cards for Projects, Publications & Items */
+.glass-card {
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
+
+.glass-card:hover {
+    background: rgba(22, 33, 62, 0.78) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7) !important;
+}
+
+.glass-card h2,
+.glass-card h3 {
+    color: #ffffff !important;
+}
+
+.glass-card p:not([class*="text-blue-"]):not([class*="text-cyan-"]):not([class*="text-emerald-"]):not([class*="text-purple-"]),
+.glass-card .card-description,
+.glass-card .project-description {
+    color: #cbd5e1 !important;
+}
+
+#main-container section,
+#main-container .bg-white\/50,
+#main-container .bg-white\/60,
+#main-container .bg-white\/70,
+#main-container .bg-white\/80 {
+    background-color: rgba(15, 23, 42, 0.65) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
 
 /* 5. Custom Scrollbar Styles */
 ::-webkit-scrollbar {

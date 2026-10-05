@@ -33,11 +33,6 @@
         </a>
     @endif
 
-    <button id="theme-toggle" class="p-1.5 rounded-full ios-glass transition hover:scale-110" title="Toggle Light / Dark Theme">
-        <span id="theme-icon-light" class="hidden text-xs">☀️</span>
-        <span id="theme-icon-dark" class="hidden text-xs">🌙</span>
-    </button>
-
     <div class="flex gap-1.5 items-center pl-1">
         <div class="mac-dot-red w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm border border-[#e0443e] cursor-pointer hover:opacity-80 transition transform hover:scale-110" title="Close Window"></div>
         <div class="mac-dot-yellow w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm border border-[#dea123] cursor-pointer hover:opacity-80 transition transform hover:scale-110" title="Minimize Window"></div>

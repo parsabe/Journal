@@ -5,48 +5,66 @@
     }
 }
 
-/* Dark Mode High-Contrast Readable Text Fix */
-.dark body {
-    color: #f8fafc !important;
-}
 
-.dark #main-container,
-.dark #sidebar,
-.dark main {
+/* High Contrast & Clean Readability for Dark Glass Container */
+#main-container {
     color: #f8fafc;
 }
 
-.dark #sidebar a {
-    color: #f1f5f9 !important;
-}
-
-.dark #sidebar a:hover {
+#main-container h1,
+#main-container h2,
+#main-container h3,
+#main-container h4,
+#main-container h5,
+#main-container h6 {
     color: #ffffff !important;
 }
 
-.dark #sidebar h2 {
+#main-container p {
+    color: #cbd5e1;
+}
+
+#main-container hr {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Dark Transparent Glass Cards for Projects, Publications & Items */
+.glass-card {
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.glass-card:hover {
+    background: rgba(22, 33, 62, 0.78) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7) !important;
+}
+
+.glass-card h2,
+.glass-card h3 {
     color: #ffffff !important;
 }
 
-.dark #sidebar p {
+.glass-card p:not([class*="text-blue-"]):not([class*="text-cyan-"]):not([class*="text-emerald-"]):not([class*="text-purple-"]),
+.glass-card .card-description,
+.glass-card .project-description {
     color: #cbd5e1 !important;
 }
 
-.dark #main-container h1,
-.dark #main-container h2,
-.dark #main-container h3,
-.dark #main-container h4,
-.dark #main-container h5,
-.dark #main-container h6 {
-    color: #ffffff !important;
-}
-
-.dark #main-container p {
-    color: #e2e8f0 !important;
-}
-
-.dark #main-container span.inline-flex {
-    color: #ffffff !important;
+#main-container section,
+#main-container .bg-white\/50,
+#main-container .bg-white\/60,
+#main-container .bg-white\/70,
+#main-container .bg-white\/80 {
+    background-color: rgba(15, 23, 42, 0.65) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 /* Custom Sleek Glass Scrollbar for Navigation Sidebar & Modals */
