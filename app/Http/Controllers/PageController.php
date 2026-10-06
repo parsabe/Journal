@@ -28,8 +28,79 @@ class PageController extends Controller
         $profileSchema = Schema::profilePage()
             ->mainEntity($personData);
 
-        // 3. Pass the $profileSchema to your view
-        return view('home', compact('profileSchema'));
+        $author = [
+            'name' => 'Parsa Besharat',
+            'title' => 'AI Researcher • Data Scientist • Architect',
+            'website' => 'https://parsabe.com',
+            'avatar' => asset('images/profile.jpg'),
+        ];
+
+        $sections = [
+            [
+                'step' => 0,
+                'id' => 'overview',
+                'title' => '00 OVERVIEW',
+                'badge' => 'SPACETIME METRIC // SCHWARZSCHILD & KERR',
+                'desc' => 'Interactive 5D spacetime singularity simulation modeling relativistic gravitational collapse, geodesic trajectories, and dimensional projection.'
+            ],
+            [
+                'step' => 1,
+                'id' => 'about',
+                'title' => '01 ABOUT',
+                'badge' => 'ARCHITECT DOSSIER // PARSA BESHARAT',
+                'desc' => 'Researcher in Artificial Intelligence, Deep Learning architectures, and relativistic physics modeling. Creator of high-dimensional neural visualizations.'
+            ],
+            [
+                'step' => 2,
+                'id' => 'projects',
+                'title' => '02 PROJECTS',
+                'badge' => 'RESEARCH & ENGINEERING SYSTEMS',
+                'desc' => 'AquaPulse neural vision telemetry, Vectra Gaussian framework, BlackWall safeguards, and real-time spacetime simulation.'
+            ],
+            [
+                'step' => 3,
+                'id' => 'publications',
+                'title' => '03 PUBLICATIONS',
+                'badge' => 'SCIENTIFIC PAPERS & MANUSCRIPTS',
+                'desc' => 'Peer-reviewed research and mathematical formulations on higher-dimensional embeddings and spacetime manifolds.'
+            ],
+            [
+                'step' => 4,
+                'id' => 'playlist',
+                'title' => '04 MY PLAYLIST',
+                'badge' => 'TRANSMISSION ACOUSTICS',
+                'desc' => 'Hans Zimmer - Interstellar Organ Variations, ambient sub-bass spacetime drones, and cosmic minimalist compositions.'
+            ],
+            [
+                'step' => 5,
+                'id' => 'books',
+                'title' => '05 FAVORITE BOOKS',
+                'badge' => 'KNOWLEDGE REPOSITORY',
+                'desc' => 'The Science of Interstellar, Sapiens, Life 3.0, and foundation texts in computational cosmology.'
+            ],
+            [
+                'step' => 6,
+                'id' => 'contact',
+                'title' => '06 CONTACT',
+                'badge' => 'QUANTUM COMMUNICATIONS LINK',
+                'desc' => 'Direct comms uplink to Parsa Besharat via parsabe.com, academic correspondence, and collaborative research.'
+            ],
+        ];
+
+        $soundtrack = [
+            'track' => 'Organ Variation',
+            'composer' => 'Hans Zimmer',
+            'album' => 'Interstellar (Original Motion Picture Soundtrack) [Expanded Edition]',
+            'label' => 'WaterTower Music / Warner Bros. Entertainment Inc.',
+            'year' => 2014,
+            'copyright' => '℗ & © 2014 WaterTower Music. All Rights Reserved.',
+            'publishing' => 'Warner-Olive Music, LLC (ASCAP) / Paramount Allegra Music (ASCAP)',
+            'fair_use_notice' => 'Featured for educational, personal portfolio showcase, and tribute demonstration purposes under fair use doctrine. All rights, master sound recording copyrights, and publishing rights reside with Hans Zimmer, WaterTower Music, and Warner Bros. Pictures.',
+            'official_stream_url' => 'https://www.watertowermusic.com/releases/interstellar/'
+        ];
+
+        // 3. Pass the schema and singularity parameters to home view
+        return view('home', compact('profileSchema', 'author', 'sections', 'soundtrack'));
     }
 
 

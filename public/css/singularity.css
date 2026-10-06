@@ -1,0 +1,1302 @@
+.singularity-section,
+.singularity-section * {
+  box-sizing: border-box;
+}
+
+body.singularity-active {
+  background-color: #000000 !important;
+  overflow-x: hidden;
+}
+
+body.singularity-active::before,
+body.singularity-active::after {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.canvas-viewport {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Deep, continuous scroll distance for all 3 phases and the 5 reality chambers */
+.scroll-container {
+  position: relative;
+  width: 100%;
+  height: 2200vh;
+}
+
+/* Layered Viewport Stages */
+.stage,
+.kernel-stage,
+.tesseract-stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: #000000;
+  will-change: opacity, transform;
+}
+
+.stage {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage.is-ready {
+  opacity: 1;
+}
+
+.kernel-stage {
+  z-index: 2;
+  opacity: 0;
+  background-color: transparent;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  transition: opacity 0.4s ease;
+}
+
+.tesseract-stage {
+  z-index: 3;
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 0.6s ease;
+  cursor: grab;
+}
+
+.tesseract-stage:active {
+  cursor: grabbing;
+}
+
+#videoCanvas,
+#kernelCanvas,
+#tesseractCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#tesseractCanvas {
+  background-color: #000000;
+}
+
+/* ==========================================================================
+   CINEMATIC WORMHOLE TRAVERSAL STAGE (NO TEXTS)
+   ========================================================================== */
+.wormhole-stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 600;
+  background-color: #000000;
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+  overflow: hidden;
+  transition: opacity 0.4s ease;
+}
+
+.wormhole-stage.is-active {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.wormhole-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+
+/* Metric Rupture Screen Flash (Top-most transition flash) */
+.rupture-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  display: none;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rupture-flash.is-flashing {
+  display: block;
+  opacity: 1;
+}
+
+/* ==========================================================================
+   CINEMATIC INTERSTELLAR HUD
+   ========================================================================== */
+
+/* Minimal Sleek Skip Pill during descent */
+.autopilot-skip-pill {
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(14, 12, 10, 0.75);
+  border: 1px solid rgba(255, 183, 0, 0.4);
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  color: #ffea9f;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.autopilot-skip-pill.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.autopilot-skip-pill:hover {
+  background: #ffb700;
+  color: #000000;
+  border-color: #ffb700;
+  box-shadow: 0 0 18px rgba(255, 183, 0, 0.6);
+  transform: translateY(-1px);
+}
+
+.skip-pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffb700;
+  box-shadow: 0 0 8px #ffb700;
+  animation: pulseBeacon 1.8s infinite ease-in-out;
+}
+
+.autopilot-skip-pill:hover .skip-pill-dot {
+  background: #000000;
+  box-shadow: none;
+}
+
+/* Direct Identity Climax Trigger Button ("WHO AM I?") */
+.who-am-i-hud-btn {
+  position: fixed;
+  top: 1.5rem;
+  left: 2rem;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(14, 11, 6, 0.88);
+  border: 1px solid rgba(255, 183, 0, 0.6);
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  color: #ffb700;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.8), 0 0 16px rgba(255, 183, 0, 0.35);
+}
+
+.who-am-i-hud-btn.is-active {
+  display: inline-flex;
+}
+
+.who-am-i-hud-btn:hover {
+  background: #ffb700;
+  color: #000000;
+  border-color: #ffb700;
+  box-shadow: 0 0 28px rgba(255, 183, 0, 0.8);
+  transform: translateY(-2px);
+}
+
+.who-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00d2ff;
+  box-shadow: 0 0 10px #00d2ff;
+  animation: pulseBeacon 1.6s infinite ease-in-out;
+}
+
+.who-am-i-hud-btn:hover .who-pulse-dot {
+  background: #000000;
+  box-shadow: none;
+}
+
+/* Audio Acoustic Controller (Top-Right) */
+.hud-audio {
+  position: fixed;
+  top: 1.5rem;
+  right: 2rem;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(10, 10, 14, 0.65);
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 183, 0, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  user-select: none;
+  transition: all 0.3s ease;
+}
+
+.hud-audio:hover {
+  border-color: rgba(255, 183, 0, 0.55);
+  box-shadow: 0 0 20px rgba(255, 183, 0, 0.2);
+}
+
+.audio-btn {
+  background: transparent;
+  border: none;
+  color: #ffb700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.audio-btn:hover {
+  color: #ffffff;
+}
+
+.audio-equalizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 16px;
+  width: 32px;
+}
+
+.eq-bar {
+  flex: 1;
+  background: #ffb700;
+  height: 20%;
+  border-radius: 1px;
+  transition: height 0.06s ease;
+}
+
+.audio-vol-slider {
+  width: 60px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.audio-vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffb700;
+  cursor: pointer;
+  box-shadow: 0 0 6px #ffb700;
+}
+
+.audio-credits-btn {
+  background: rgba(255, 183, 0, 0.12);
+  border: 1px solid rgba(255, 183, 0, 0.35);
+  color: #ffb700;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.2s ease;
+  margin-left: 0.4rem;
+}
+
+.audio-credits-btn:hover {
+  background: rgba(255, 183, 0, 0.25);
+  border-color: #ffb700;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 183, 0, 0.3);
+}
+
+.credits-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.credits-meta-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+}
+
+.credits-meta-item.full-width {
+  grid-column: span 2;
+}
+
+.credits-meta-item .c-label {
+  display: block;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: rgba(255, 183, 0, 0.85);
+  margin-bottom: 0.3rem;
+}
+
+.credits-meta-item .c-val {
+  font-size: 0.86rem;
+  color: #e5e5e5;
+  line-height: 1.4;
+}
+
+.credits-meta-item .highlight-gold {
+  color: #ffd066;
+  font-weight: 600;
+}
+
+.credits-disclaimer-box {
+  background: rgba(255, 183, 0, 0.06);
+  border-left: 3px solid #ffb700;
+  padding: 0.9rem 1.2rem;
+  border-radius: 0 12px 12px 0;
+  margin: 1.4rem 0;
+  text-align: left;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.credits-disclaimer-box strong {
+  display: block;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  color: #ffb700;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.35rem;
+  font-size: 0.72rem;
+}
+
+.credits-official-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.6rem;
+  background: linear-gradient(135deg, rgba(255, 183, 0, 0.2), rgba(255, 136, 0, 0.2));
+  border: 1px solid rgba(255, 183, 0, 0.6);
+  color: #ffdd88;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.credits-official-btn:hover {
+  background: linear-gradient(135deg, #ffb700, #ff8800);
+  color: #000000;
+  box-shadow: 0 0 25px rgba(255, 183, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Audio Unlock Banner (Appears until first user gesture) */
+.audio-banner {
+  position: fixed;
+  bottom: 5.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  background: rgba(20, 15, 8, 0.85);
+  border: 1px solid rgba(255, 183, 0, 0.5);
+  padding: 0.6rem 1.4rem;
+  border-radius: 9999px;
+  color: #ffea9f;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 183, 0, 0.25);
+  animation: bannerGlow 2.5s infinite ease-in-out;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.audio-banner.is-dismissed {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 20px);
+}
+
+@keyframes bannerGlow {
+  0%, 100% { border-color: rgba(255, 183, 0, 0.35); box-shadow: 0 0 15px rgba(255, 183, 0, 0.15); }
+  50% { border-color: rgba(255, 183, 0, 0.8); box-shadow: 0 0 25px rgba(255, 183, 0, 0.4); }
+}
+
+/* 5D Spacetime Timeline Bar (Bottom-Center) */
+.hud-timeline {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(8, 8, 12, 0.75);
+  padding: 0.4rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  user-select: none;
+  max-width: 95vw;
+  overflow-x: auto;
+}
+
+.timeline-step {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.75rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline-step:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.timeline-step.active {
+  color: #000000;
+  background: #ffb700;
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(255, 183, 0, 0.6);
+}
+
+.timeline-step.tesseract-step.active {
+  background: linear-gradient(135deg, #ffb700, #00d2ff);
+  color: #000000;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.6);
+}
+
+/* Scroll Direction Indicator (Bottom-Left) */
+.hud-scroll-hint {
+  position: fixed;
+  bottom: 1.8rem;
+  left: 2rem;
+  z-index: 25;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hud-scroll-hint .hint-arrow {
+  display: inline-block;
+  animation: bounceArrow 1.5s infinite ease-in-out;
+  color: #ffb700;
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ==========================================================================
+   REALITY CHAMBER INSPECT MODAL (Glassmorphic 3D Dossier)
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 50;
+  background: rgba(2, 2, 4, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 680px;
+  background: linear-gradient(160deg, rgba(22, 18, 12, 0.95) 0%, rgba(10, 12, 16, 0.96) 100%);
+  border: 1px solid rgba(255, 183, 0, 0.35);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 183, 0, 0.15);
+  border-radius: 16px;
+  padding: 2.2rem;
+  position: relative;
+  max-height: 88vh;
+  overflow-y: auto;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-backdrop.is-open .modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(255, 183, 0, 0.2);
+  border-color: #ffb700;
+  color: #ffb700;
+}
+
+.modal-timeline-tag {
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  color: #ffb700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: rgba(255, 183, 0, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 183, 0, 0.25);
+}
+
+.modal-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+
+.modal-subtitle {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 1.4rem;
+  line-height: 1.45;
+}
+
+.modal-formula-box {
+  background: rgba(0, 0, 0, 0.5);
+  border-left: 3px solid #ffb700;
+  padding: 0.8rem 1rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1.4rem;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  color: #ffe082;
+}
+
+.modal-body {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.8rem;
+}
+
+.modal-body p {
+  margin-bottom: 0.9rem;
+}
+
+.modal-body ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+.modal-body li {
+  position: relative;
+  padding-left: 1.4rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.modal-body li::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: #ffb700;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.modal-btn-primary {
+  background: #ffb700;
+  color: #000000;
+  text-decoration: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-btn-primary:hover {
+  background: #ffc933;
+  box-shadow: 0 0 18px rgba(255, 183, 0, 0.5);
+}
+
+.modal-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.modal-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 860px) {
+  .hud-top {
+    top: 1rem;
+    left: 1rem;
+  }
+  .hud-audio {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.35rem 0.75rem;
+  }
+  .hud-telemetry-row {
+    font-size: 0.65rem;
+    gap: 0.8rem;
+  }
+  .hud-timeline {
+    bottom: 1rem;
+    padding: 0.3rem 0.4rem;
+  }
+  .timeline-step {
+    font-size: 0.62rem;
+    padding: 0.35rem 0.55rem;
+  }
+  .hud-scroll-hint {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   PRELOADER & AUTOMATIC DESCENT CONTROLS
+   ========================================================================== */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  background: radial-gradient(circle at 50% 50%, #1c1409 0%, #0a0805 45%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preloader.is-dismissed {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.08);
+}
+
+.preloader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 580px;
+  padding: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.preloader-ring {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preloader-ring::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px dashed rgba(255, 183, 0, 0.45);
+  animation: spinRing 14s linear infinite;
+}
+
+.preloader-ring-inner {
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #ffb700;
+  border-right-color: #00d2ff;
+  animation: spinRing 2.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.preloader-core {
+  width: 32px;
+  height: 32px;
+  background: #000000;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #ffb700, inset 0 0 10px rgba(255, 183, 0, 0.8);
+  border: 1.5px solid #ffffff;
+}
+
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.preloader-badge {
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  color: #ffb700;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: inline-block;
+}
+
+.preloader-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 25px rgba(255, 183, 0, 0.4);
+}
+
+.preloader-sub {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 2.2rem;
+}
+
+.preloader-bar-wrap {
+  width: 280px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+.preloader-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #ffb700, #00d2ff);
+  box-shadow: 0 0 10px #ffb700;
+  transition: width 0.15s ease-out;
+}
+
+.preloader-status {
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.12em;
+  margin-bottom: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.preloader-status span {
+  color: #ffb700;
+  font-weight: 600;
+}
+
+/* Big Glowing Launch Button */
+.launch-btn {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 183, 0, 0.2) 0%, rgba(255, 183, 0, 0.08) 100%);
+  border: 1px solid #ffb700;
+  box-shadow: 0 0 30px rgba(255, 183, 0, 0.3), inset 0 0 15px rgba(255, 183, 0, 0.2);
+  padding: 1.1rem 2.8rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  color: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.launch-btn.is-hidden {
+  display: none;
+}
+
+.launch-btn:hover {
+  transform: scale(1.05);
+  border-color: #ffe082;
+  box-shadow: 0 0 50px rgba(255, 183, 0, 0.6), inset 0 0 25px rgba(255, 183, 0, 0.4);
+}
+
+.launch-btn:active {
+  transform: scale(0.98);
+}
+
+.launch-btn-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #ffb700;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
+}
+
+.launch-btn-sub {
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+}
+
+/* Timeline Sequel Arrow Navigation Buttons */
+.nav-arrow-btn {
+  background: rgba(255, 183, 0, 0.15);
+  border: 1px solid rgba(255, 183, 0, 0.45);
+  color: #ffb700;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.nav-arrow-btn:hover {
+  background: #ffb700;
+  color: #000000;
+  box-shadow: 0 0 15px rgba(255, 183, 0, 0.5);
+  transform: scale(1.05);
+}
+
+.nav-arrow-btn:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================================================
+   WASD CONTROLS HINT
+   ========================================================================== */
+.hud-controls-hint {
+  position: fixed;
+  bottom: 5.5rem;
+  left: 2rem;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(8, 8, 12, 0.65);
+  border: 1px solid rgba(255, 183, 0, 0.25);
+  padding: 0.45rem 0.9rem;
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  user-select: none;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.hud-controls-hint.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wasd-keys {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.key-row {
+  display: flex;
+  gap: 2px;
+}
+
+.key-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  background: rgba(255, 183, 0, 0.15);
+  border: 1px solid rgba(255, 183, 0, 0.5);
+  border-radius: 4px;
+  color: #ffb700;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.hud-controls-hint .hint-text {
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.08em;
+}
+
+/* ==========================================================================
+   PERSONAL WEBSITE STAGE (SECTION 2 / STAGE 1)
+   Direct emergence after the Wormhole Traversal and Metric White Flash
+   ========================================================================== */
+.singularity-section {
+  position: relative;
+  width: 100%;
+  z-index: 20;
+}
+
+.personal-website-section {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  z-index: 10;
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.personal-website-section.is-active {
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* ==========================================================================
+   IDENTITY PROMPT MODAL: "DO YOU NOW KNOW WHO I AM?"
+   ========================================================================== */
+.identity-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 45;
+  background: rgba(2, 2, 4, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.identity-modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.identity-card {
+  position: relative;
+  max-width: 480px;
+  width: 100%;
+  background: rgba(12, 10, 8, 0.92);
+  border: 1px solid rgba(255, 183, 0, 0.45);
+  border-radius: 28px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 183, 0, 0.25);
+  transform: scale(0.92);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.identity-modal-backdrop.is-open .identity-card {
+  transform: scale(1);
+}
+
+.identity-avatar-wrap {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin: 0 auto 1.4rem auto;
+  padding: 4px;
+  background: linear-gradient(135deg, #ffb700, #ff5500, #00d2ff);
+  box-shadow: 0 0 25px rgba(255, 183, 0, 0.5);
+}
+
+.identity-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 25%;
+  border-radius: 50%;
+}
+
+.identity-tag {
+  display: inline-block;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: #ffb700;
+  margin-bottom: 0.6rem;
+}
+
+.identity-question {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.75rem;
+}
+
+.identity-desc {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.identity-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.identity-btn-yes {
+  background: linear-gradient(135deg, #ffb700, #ff8800);
+  border: none;
+  color: #000000;
+  font-family: -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  padding: 0.95rem 1.4rem;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 25px rgba(255, 183, 0, 0.4);
+  transition: all 0.2s ease;
+}
+
+.identity-btn-yes:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 183, 0, 0.6);
+  filter: brightness(1.1);
+}
+
+.identity-btn-no {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.65);
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  padding: 0.7rem 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.identity-btn-no:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE TUNING
+   ========================================================================== */
+@media (max-width: 768px) {
+  .autopilot-skip-pill {
+    top: 1rem;
+    left: 1rem;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.65rem;
+  }
+
+  .hud-audio {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.35rem 0.75rem;
+    gap: 0.6rem;
+  }
+
+  .audio-vol-slider {
+    display: none;
+  }
+
+  .hud-timeline {
+    bottom: 0.8rem;
+    max-width: 96vw;
+    padding: 0.3rem 0.4rem;
+    gap: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hud-timeline::-webkit-scrollbar {
+    display: none;
+  }
+
+  .timeline-step {
+    font-size: 0.6rem;
+    padding: 0.35rem 0.55rem;
+  }
+
+  .nav-arrow-btn {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  .hud-scroll-hint,
+  .hud-controls-hint {
+    display: none !important;
+  }
+
+  .modal-card {
+    padding: 1.5rem;
+    max-height: 82vh;
+    max-height: 82dvh;
+    border-radius: 20px;
+  }
+
+  .modal-title {
+    font-size: 1.35rem;
+  }
+
+  .saturn-title {
+    font-size: 1.8rem;
+  }
+
+  .saturn-content {
+    padding: 2rem 1.4rem;
+    border-radius: 22px;
+  }
+
+  .preloader-content {
+    padding: 1.5rem;
+  }
+
+  .preloader-title {
+    font-size: 1.8rem;
+  }
+}

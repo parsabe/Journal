@@ -33,6 +33,11 @@
         </a>
     @endif
 
+    <!-- 5D SINGULARITY PORTAL TRIGGER -->
+    <button onclick="if(window.reenterSingularity) window.reenterSingularity();" class="px-2.5 py-1 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-[11px] font-bold shadow-sm transition transform hover:scale-105 flex items-center gap-1" title="Re-enter 5D Singularity Experience">
+        🌌 <span>5D Bulk</span>
+    </button>
+
     <div class="flex gap-1.5 items-center pl-1">
         <div class="mac-dot-red w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm border border-[#e0443e] cursor-pointer hover:opacity-80 transition transform hover:scale-110" title="Close Window"></div>
         <div class="mac-dot-yellow w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm border border-[#dea123] cursor-pointer hover:opacity-80 transition transform hover:scale-110" title="Minimize Window"></div>

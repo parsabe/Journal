@@ -36,6 +36,14 @@
             {{ (session('app_locale') === 'de' || app()->getLocale() === 'de') ? 'Fenster-Fokus' : 'Window Focus' }}
         </span>
     </button>
+
+    <!-- Hans Zimmer Soundtrack Controller (Play / Pause Only) -->
+    <button id="taskbar-audio-toggle" type="button" onclick="event.stopPropagation(); window.toggleMainSoundtrack && window.toggleMainSoundtrack(event)" title="Hans Zimmer - Organ Variation (Play / Pause)"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-mono transition-all transform hover:scale-105 active:scale-95 group ml-1">
+        <span id="taskbar-audio-icon" class="text-sm">🎵</span>
+        <span class="hidden md:inline font-bold">HANS ZIMMER</span>
+        <span id="taskbar-audio-state" class="text-[10px] text-orange-400 font-bold uppercase">[PLAY]</span>
+    </button>
 </div>
 
 <!-- GLOBAL RICH TEXT JOURNAL EDITOR MODAL SUITE -->
@@ -230,4 +238,77 @@
     </script>
 @endif
 <script src="{{ asset('js/rank-notifier.js') }}"></script>
+
+<!-- Taskbar Soundtrack Audio Controller Script -->
+<script>
+    function toggleMainSoundtrack(e) {
+        if (e && typeof e.stopPropagation === 'function') {
+            e.stopPropagation();
+        }
+        if (window.spacetimeAudio && typeof window.spacetimeAudio.togglePlayPause === 'function') {
+            window.spacetimeAudio.togglePlayPause();
+            syncTaskbarAudioState();
+            return;
+        }
+        const audio = document.getElementById('bgMusic');
+        if (!audio) return;
+        if (audio.paused) {
+            audio.play().then(() => syncTaskbarAudioState()).catch(() => {});
+        } else {
+            audio.pause();
+            syncTaskbarAudioState();
+        }
+    }
+    window.toggleMainSoundtrack = toggleMainSoundtrack;
+
+    function syncTaskbarAudioState() {
+        let isPlaying = false;
+        if (window.spacetimeAudio && window.spacetimeAudio.audioElement) {
+            isPlaying = !window.spacetimeAudio.audioElement.paused;
+        } else {
+            const audio = document.getElementById('bgMusic');
+            isPlaying = audio ? !audio.paused : false;
+        }
+
+        const stateEl = document.getElementById('taskbar-audio-state');
+        const iconEl = document.getElementById('taskbar-audio-icon');
+        const btn = document.getElementById('taskbar-audio-toggle');
+        if (!stateEl || !iconEl) return;
+
+        if (isPlaying) {
+            stateEl.textContent = '[PAUSE]';
+            stateEl.className = 'text-[10px] text-emerald-400 font-bold uppercase';
+            iconEl.textContent = '🎵';
+            if (btn) {
+                btn.classList.add('border-emerald-500/40', 'bg-emerald-500/15');
+                btn.classList.remove('border-white/20', 'bg-white/10');
+            }
+        } else {
+            stateEl.textContent = '[PLAY]';
+            stateEl.className = 'text-[10px] text-orange-400 font-bold uppercase';
+            iconEl.textContent = '▶';
+            if (btn) {
+                btn.classList.remove('border-emerald-500/40', 'bg-emerald-500/15');
+                btn.classList.add('border-white/20', 'bg-white/10');
+            }
+        }
+    }
+    window.syncTaskbarAudioState = syncTaskbarAudioState;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const audio = document.getElementById('bgMusic');
+        if (audio) {
+            audio.addEventListener('play', syncTaskbarAudioState);
+            audio.addEventListener('pause', syncTaskbarAudioState);
+            audio.addEventListener('playing', syncTaskbarAudioState);
+        }
+        const toggleBtn = document.getElementById('taskbar-audio-toggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+        syncTaskbarAudioState();
+    });
+</script>
 

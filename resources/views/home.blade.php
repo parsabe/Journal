@@ -43,7 +43,11 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <link rel="icon" href="{{ asset('images/profile.jpg') }}">
+    <!-- Interstellar Singularity Styles & Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/singularity.css') }}">
 
     {!! $profileSchema->toScript() !!}
 
@@ -54,12 +58,28 @@
 <script type="module" src="{{ asset('js/gtag.js') }}"></script>
 
 <body
-    class="text-gray-800 dark:text-gray-100 antialiased flex items-center justify-center p-4 lg:p-10 min-h-screen relative overflow-x-hidden">
+    class="text-gray-800 dark:text-gray-100 antialiased min-h-screen relative overflow-x-hidden is-loading singularity-active">
 
-    @include('loading_screen')
+    <!-- Hans Zimmer Master Audio Soundtrack (Global, persistent across Singularity & Personal Website) -->
+    <audio id="bgMusic" loop preload="auto" playsinline>
+        <source src="{{ asset('audio/hans_zimmer.mp3') }}" type="audio/mpeg">
+    </audio>
 
-    <div id="main-container"
-        class="ios-glass relative w-full max-w-6xl flex flex-col md:flex-row rounded-[2.5rem] overflow-hidden h-[85vh] z-10 transition-colors duration-700 animate-page-zoom-in">
+    <!-- =========================================================================
+         SECTION 1 / STAGE 0: INTERSTELLAR 5D BLACK HOLE & SINGULARITY EXPERIENCE
+         ========================================================================= -->
+    <section id="singularitySection" class="singularity-section">
+        @include('singularity')
+    </section>
+
+    <!-- =========================================================================
+         SECTION 2 / STAGE 1: PERSONAL DESKTOP WEBSITE (PARSA BESHARAT)
+         Revealed smoothly after Wormhole Traversal & Metric Rupture White Flash
+         ========================================================================= -->
+    <section id="personalWebsiteSection" class="personal-website-section flex items-center justify-center p-4 lg:p-10 min-h-screen relative" style="display: none; opacity: 0;">
+
+        <div id="main-container"
+            class="ios-glass relative w-full max-w-6xl flex flex-col md:flex-row rounded-[2.5rem] overflow-hidden h-[85vh] z-10 transition-colors duration-700 animate-page-zoom-in">
 
         @include('top-header-controls')
 
@@ -387,16 +407,6 @@
                     else alert('Link copied!');
                 });
             }
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-
-            function sharePostLink(postId) {
-                const url = window.location.origin + '/user/posts/' + postId;
-                navigator.clipboard.writeText(url);
-                alert('Post link copied to clipboard!');
-            }
 
             function escapeHtml(t) {
                 return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -408,6 +418,12 @@
     <!-- Taskbar & Mac Window Controls -->
     @include('taskbar')
     <script src="{{ asset('js/mac-window-controls.js') }}"></script>
+    </section>
+
+    <!-- 5D Singularity Engine Scripts -->
+    <script src="{{ asset('js/three.min.js') }}"></script>
+    <script src="{{ asset('js/singularity-audio.js') }}"></script>
+    <script src="{{ asset('js/singularity.js') }}"></script>
 </body>
 
 </html>
